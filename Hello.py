@@ -8,7 +8,7 @@ from PIL import Image
 
 # Setup your config
 st.set_page_config(
-    page_title="LyzrVoice",
+    page_title="Pocket Law",
     layout="wide",  # "wide" or "centered"
     initial_sidebar_state="auto",
     page_icon="lyzr-logo-cut.png"
@@ -53,3 +53,26 @@ if user_question:
     st.write(response.response)
 else:
     st.write("Please ask a question or click 'Show Sample Question'.")
+
+
+
+# Footer or any additional information
+with st.expander("ℹ️ - About this App"):
+    st.markdown(
+        """
+    This app uses Lyzr Core to process information. For any inquiries or issues, please contact Lyzr.
+
+    """
+    )
+    st.link_button("Lyzr", url="https://www.lyzr.ai/", use_container_width=True)
+    st.link_button(
+        "Book a Demo", url="https://www.lyzr.ai/book-demo/", use_container_width=True
+    )
+    st.link_button(
+        "Discord", url="https://discord.gg/nm7zSyEFA2", use_container_width=True
+    )
+    st.link_button(
+        "Slack",
+        url="https://join.slack.com/t/genaiforenterprise/shared_invite/zt-2a7fr38f7-_QDOY1W1WSlSiYNAEncLGw",
+        use_container_width=True,
+    )

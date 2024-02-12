@@ -1,51 +1,55 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022)
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import streamlit as st
-from streamlit.logger import get_logger
 
-LOGGER = get_logger(__name__)
+import os
+import openai
+from lyzr import QABot
+from pprint import pprint
+from PIL import Image
 
+# Setup your config
+st.set_page_config(
+    page_title="LyzrVoice",
+    layout="wide",  # "wide" or "centered"
+    initial_sidebar_state="auto",
+    page_icon="lyzr-logo-cut.png"
+)
 
-def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
-    )
+# Display an image logo at the top
+image = Image.open("lyzr-logo.png")
+st.image(image, width=150)
 
-    st.write("# Welcome to Streamlit! 👋")
+# Display the title of the application
+st.title("Lyzr Pocket Law")
 
-    st.sidebar.success("Select a demo above.")
+# Setting up API Key for OpenAI and environment variable
+openai.api_key = st.secrets["apikey"]
+os.environ['OPENAI_API_KEY'] = openai.api_key
 
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
-    )
+# Location of the PDF document to be used by the QABot
+file_path = '2020-handbook.pdf'
 
+# Text and input box for user to ask their questions
+st.text("Ask any law-related question:")
+user_question = st.text_input("Your question", "")
 
-if __name__ == "__main__":
-    run()
+# Set a sample question and a button for it
+sample_question = "What is traffic law on DUI?"
+if st.button('Show Sample Question'):
+    user_question = sample_question
+
+#Querry wrapper prompt
+prompt = '''Legal Expert: Given your comprehensive understanding of global legal systems, provide a detailed yet concise answer to the following query for educational purposes. This will aid in understanding complex legal principles and their applications. Please include any relevant legal principles, statutes, or case law in your response. Your answer should be informed, authoritative, and as specific as possible to the jurisdiction mentioned (if any).'''
+
+# Initialize the QA Bot with the PDF document
+qa_bot = QABot.pdf_qa(input_files=[file_path], query_wrapper_prompt=prompt)
+
+# Check if the user has input a question or clicked the sample question button
+if user_question:
+    # Query the model with the question
+    response = qa_bot.query(user_question)
+    
+    # Display the response to the user
+    st.text("Answer:")
+    st.write(response)
+else:
+    st.write("Please ask a question or click 'Show Sample Question'.")

@@ -26,7 +26,7 @@ openai.api_key = st.secrets["apikey"]
 os.environ['OPENAI_API_KEY'] = openai.api_key
 
 # Location of the PDF document to be used by the QABot
-file_path = 'usc01@118-30.pdf'
+file_path = '2020-handbook.pdf'
 
 # Text and input box for user to ask their questions
 st.text("Ask any law-related question:")

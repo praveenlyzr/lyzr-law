@@ -50,6 +50,6 @@ if user_question:
     
     # Display the response to the user
     st.text("Answer:")
-    st.write(response)
+    st.write(response.response)
 else:
     st.write("Please ask a question or click 'Show Sample Question'.")

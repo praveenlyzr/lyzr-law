@@ -41,7 +41,7 @@ if st.button('Show Sample Question'):
 prompt = '''Legal Expert: Given your comprehensive understanding of global legal systems, provide a detailed yet concise answer to the following query for educational purposes. This will aid in understanding complex legal principles and their applications. Please include any relevant legal principles, statutes, or case law in your response. Your answer should be informed, authoritative, and as specific as possible to the jurisdiction mentioned (if any).'''
 
 # Initialize the QA Bot with the PDF document
-qa_bot = QABot.pdf_qa(input_files=[file_path], query_wrapper_prompt=prompt)
+qa_bot = QABot.pdf_qa(input_files=[file_path], system_prompt=prompt)
 
 # Check if the user has input a question or clicked the sample question button
 if user_question:
